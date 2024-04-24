@@ -1,10 +1,10 @@
 package ru.bootjava.restaurantvoting.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.domain.Persistable;
 import org.springframework.data.util.ProxyUtils;
-import org.springframework.util.Assert;
+import ru.bootjava.restaurantvoting.HasId;
 
 @MappedSuperclass
 //  https://stackoverflow.com/a/6084701/548473
@@ -13,23 +13,12 @@ import org.springframework.util.Assert;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
-public abstract class BaseEntity implements Persistable<Integer> {
+public abstract class BaseEntity implements HasId {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY) // https://stackoverflow.com/a/28025008/548473
     protected Integer id;
-
-    // doesn't work for hibernate lazy proxy
-    public int id() {
-        Assert.notNull(id, "Entity must have id");
-        return id;
-    }
-
-    @Override
-    public boolean isNew() {
-        return id == null;
-    }
 
     //    https://stackoverflow.com/questions/1638723
     @Override
@@ -47,5 +36,10 @@ public abstract class BaseEntity implements Persistable<Integer> {
     @Override
     public int hashCode() {
         return id == null ? 0 : id;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + ":" + id;
     }
 }

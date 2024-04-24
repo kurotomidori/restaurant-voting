@@ -1,8 +1,9 @@
-INSERT INTO USERS (EMAIL, FIRST_NAME, LAST_NAME, PASSWORD)
-VALUES ('user@gmail.com', 'User_First', 'User_Last', 'password'),
-       ('admin@javaops.ru', 'Admin_First', 'Admin_Last', 'admin');
+INSERT INTO USERS (name, email, password)
+VALUES ('User', 'user@yandex.ru', '{noop}password'),
+       ('Admin', 'admin@gmail.com', '{noop}admin'),
+       ('Guest', 'guest@gmail.com', '{noop}guest');
 
-INSERT INTO USER_ROLE (ROLE, USER_ID)
-VALUES ('ROLE_USER', 1),
-       ('ROLE_ADMIN', 2),
-       ('ROLE_USER', 2);
+INSERT INTO USER_ROLE (role, user_id)
+VALUES ('USER', 1),
+       ('ADMIN', 2),
+       ('USER', 2);
