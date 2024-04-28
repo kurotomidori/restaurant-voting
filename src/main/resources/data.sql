@@ -10,7 +10,8 @@ VALUES ('USER', 1),
 
 INSERT INTO RESTAURANTS (name)
 VALUES ('rest_1'),
-       ('rest_2');
+       ('rest_2'),
+       ('rest_3');
 
 INSERT INTO MEALS (name, price, meal_date, restaurant_id)
 VALUES ('meal1', 100, CURRENT_DATE, 1),
