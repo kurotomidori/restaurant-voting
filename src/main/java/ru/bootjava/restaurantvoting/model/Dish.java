@@ -10,18 +10,18 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "meals", uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "meal_date"}, name = "meal_unique_name_date_idx")})
+@Table(name = "dishes", uniqueConstraints = {@UniqueConstraint(columnNames = {"restaurant_id", "name", "dish_date"}, name = "dish_unique_name_date_idx")})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true, exclude = {"restaurant"})
-public class Meal extends NamedEntity {
+public class Dish extends NamedEntity {
 
     @Column(name = "price", nullable = false)
     @NotNull
     private Integer price;
 
-    @Column(name = "meal_date", nullable = false)
+    @Column(name = "dish_date", nullable = false)
     @NotNull
     private LocalDate date;
 
@@ -31,7 +31,7 @@ public class Meal extends NamedEntity {
     @JsonIgnore
     private Restaurant restaurant;
 
-    public Meal(Integer id, String name, Integer price, LocalDate date) {
+    public Dish(Integer id, String name, Integer price, LocalDate date) {
         super(id, name);
         this.price = price;
         this.date = date;

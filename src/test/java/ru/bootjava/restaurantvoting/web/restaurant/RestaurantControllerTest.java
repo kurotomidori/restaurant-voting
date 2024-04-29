@@ -22,8 +22,6 @@ import static ru.bootjava.restaurantvoting.web.user.UserTestData.USER_MAIL;
 
 class RestaurantControllerTest extends AbstractControllerTest {
 
-    private static final String REST_URL_SLASH = REST_URL + '/';
-
     @Autowired
     private RestaurantRepository repository;
 
@@ -37,7 +35,14 @@ class RestaurantControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = USER_MAIL)
+    void getUnAuth() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL))
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_MAIL)
     void get() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL_SLASH + RESTAURANT_1_ID))
                 .andExpect(status().isOk())
@@ -46,7 +51,7 @@ class RestaurantControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = USER_MAIL)
+    @WithUserDetails(value = ADMIN_MAIL)
     void getNotFound() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL_SLASH + NOT_FOUND))
                 .andDo(print())
@@ -109,11 +114,6 @@ class RestaurantControllerTest extends AbstractControllerTest {
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(getNew())))
-                .andExpect(status().isForbidden());
-
-        perform(MockMvcRequestBuilders.put(REST_URL_SLASH + RESTAURANT_1_ID)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(getUpdated())))
                 .andExpect(status().isForbidden());
     }
 

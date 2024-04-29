@@ -1,8 +1,8 @@
 package ru.bootjava.restaurantvoting.web.restaurant;
 
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,19 +15,17 @@ import ru.bootjava.restaurantvoting.repository.RestaurantRepository;
 import java.net.URI;
 import java.util.List;
 
-import static org.slf4j.LoggerFactory.getLogger;
 import static ru.bootjava.restaurantvoting.web.RestValidation.assureIdConsistent;
 import static ru.bootjava.restaurantvoting.web.RestValidation.checkNew;
 
 @RestController
 @RequestMapping(value = RestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@Slf4j
+@AllArgsConstructor
 public class RestaurantController {
 
     static final String REST_URL = "/api/restaurants";
 
-    protected final Logger log = getLogger(getClass());
-
-    @Autowired
     private RestaurantRepository repository;
 
     @GetMapping

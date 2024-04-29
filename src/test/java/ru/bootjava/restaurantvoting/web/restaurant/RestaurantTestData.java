@@ -3,9 +3,13 @@ package ru.bootjava.restaurantvoting.web.restaurant;
 import ru.bootjava.restaurantvoting.model.Restaurant;
 import ru.bootjava.restaurantvoting.web.MatcherFactory;
 
+import static ru.bootjava.restaurantvoting.web.restaurant.RestaurantController.REST_URL;
+
 public class RestaurantTestData {
 
     public static final MatcherFactory.Matcher<Restaurant> RESTAURANT_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Restaurant.class);
+
+    public static final String REST_URL_SLASH = REST_URL + '/';
 
     public static final int RESTAURANT_1_ID = 1;
     public static final int RESTAURANT_2_ID = 2;

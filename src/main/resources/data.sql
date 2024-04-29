@@ -13,10 +13,15 @@ VALUES ('rest_1'),
        ('rest_2'),
        ('rest_3');
 
-INSERT INTO MEALS (name, price, meal_date, restaurant_id)
-VALUES ('meal1', 100, CURRENT_DATE, 1),
-       ('meal2', 200, CURRENT_DATE, 1),
-       ('meal3', 300, CURRENT_DATE, 2);
+INSERT INTO DISHES (name, price, dish_date, restaurant_id)
+VALUES ('dish1', 100, CURRENT_DATE, 1),
+       ('dish2', 200, CURRENT_DATE, 1),
+       ('old_dish', 300, '2024-01-01', 1),
+       ('dish3', 300, CURRENT_DATE, 2),
+       ('dish2', 200, CURRENT_DATE, 2),
+       ('old_dish', 300, '2024-01-01', 2),
+       ('dish2', 200, CURRENT_DATE, 3),
+       ('old_dish', 300, '2024-01-01', 3);
 
 INSERT INTO VOTES (vote_date, restaurant_id, user_id)
 VALUES (CURRENT_DATE, 1, 1),

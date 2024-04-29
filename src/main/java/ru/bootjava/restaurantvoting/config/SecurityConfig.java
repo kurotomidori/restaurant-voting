@@ -53,12 +53,14 @@ public class SecurityConfig {
         http.securityMatcher("/api/**").authorizeHttpRequests(authz ->
                         authz.requestMatchers("/api/admin/**").hasRole(Role.ADMIN.name())
                                 .requestMatchers(HttpMethod.POST, "/api/profile").anonymous()
-                                .requestMatchers(HttpMethod.POST,"/api/restaurants").hasRole(Role.ADMIN.name())
-                                .requestMatchers(HttpMethod.PUT,"/api/restaurants/**").hasRole(Role.ADMIN.name())
-                                .requestMatchers(HttpMethod.DELETE,"/api/restaurants/**").hasRole(Role.ADMIN.name())
+                                .requestMatchers(HttpMethod.GET,"/api/restaurants", "/api/restaurants/{id}/dishes/today").authenticated()
+                                .requestMatchers(HttpMethod.POST, "/api/restaurants", "/api/restaurants/{id}/**").hasRole(Role.ADMIN.name())
+                                .requestMatchers(HttpMethod.GET, "/api/restaurants/**").hasRole(Role.ADMIN.name())
+                                .requestMatchers(HttpMethod.PUT, "/api/restaurants/**").hasRole(Role.ADMIN.name())
+                                .requestMatchers(HttpMethod.DELETE, "/api/restaurants/**").hasRole(Role.ADMIN.name())
                                 .requestMatchers("/", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
                                 .requestMatchers("/api/**").authenticated()
-                                )
+                )
                 .httpBasic(hbc -> hbc.authenticationEntryPoint(authenticationEntryPoint))
                 .sessionManagement(smc -> smc.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable);
