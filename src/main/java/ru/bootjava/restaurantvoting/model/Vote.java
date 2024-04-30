@@ -10,7 +10,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "votes", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "vote_date"}, name = "vote_unique_user_date_idx")})
+@Table(name = "vote", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "vote_date"}, name = "vote_unique_user_date_idx")})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -27,14 +27,27 @@ public class Vote extends BaseEntity {
     @JsonIgnore
     private Restaurant restaurant;
 
+    @Column(name = "restaurant_id", insertable = false, updatable = false)
+    private Integer restaurantId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private User user;
 
+    @Column(name = "user_id", insertable = false, updatable = false)
+    private Integer userId;
+
     public Vote(Integer id, LocalDate date) {
         super(id);
         this.date = date;
+    }
+
+    public Vote(Integer id, LocalDate date, Integer restaurantId, Integer userId) {
+        super(id);
+        this.date = date;
+        this.restaurantId = restaurantId;
+        this.userId = userId;
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.bootjava.restaurantvoting.model.Restaurant;
 import ru.bootjava.restaurantvoting.repository.RestaurantRepository;
 import ru.bootjava.restaurantvoting.util.JsonUtil;
+import ru.bootjava.restaurantvoting.util.RestaurantUtil;
 import ru.bootjava.restaurantvoting.web.AbstractControllerTest;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,6 +20,7 @@ import static ru.bootjava.restaurantvoting.web.restaurant.RestaurantController.R
 import static ru.bootjava.restaurantvoting.web.restaurant.RestaurantTestData.*;
 import static ru.bootjava.restaurantvoting.web.user.UserTestData.ADMIN_MAIL;
 import static ru.bootjava.restaurantvoting.web.user.UserTestData.USER_MAIL;
+import static ru.bootjava.restaurantvoting.web.vote.VoteTestData.vote2;
 
 class RestaurantControllerTest extends AbstractControllerTest {
 
@@ -31,7 +33,7 @@ class RestaurantControllerTest extends AbstractControllerTest {
         perform(MockMvcRequestBuilders.get(REST_URL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(RESTAURANT_MATCHER.contentJson(restaurant1, restaurant2, restaurant3));
+                .andExpect(RESTAURANT_TO_MATCHER.contentJson(RestaurantUtil.getTos(restaurants, vote2)));
     }
 
     @Test

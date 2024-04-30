@@ -8,12 +8,12 @@ VALUES ('USER', 1),
        ('ADMIN', 2),
        ('USER', 2);
 
-INSERT INTO RESTAURANTS (name)
+INSERT INTO RESTAURANT (name)
 VALUES ('rest_1'),
        ('rest_2'),
        ('rest_3');
 
-INSERT INTO DISHES (name, price, dish_date, restaurant_id)
+INSERT INTO DISH (name, price, dish_date, restaurant_id)
 VALUES ('dish1', 100, CURRENT_DATE, 1),
        ('dish2', 200, CURRENT_DATE, 1),
        ('old_dish', 300, '2024-01-01', 1),
@@ -23,6 +23,9 @@ VALUES ('dish1', 100, CURRENT_DATE, 1),
        ('dish2', 200, CURRENT_DATE, 3),
        ('old_dish', 300, '2024-01-01', 3);
 
-INSERT INTO VOTES (vote_date, restaurant_id, user_id)
-VALUES (CURRENT_DATE, 1, 1),
+
+INSERT INTO VOTE (vote_date, restaurant_id, user_id)
+VALUES ('2024-01-01', 2, 1),
+       (CURRENT_DATE, 1, 1),
+       ('2024-01-01', 3, 2),
        (CURRENT_DATE, 2, 2);

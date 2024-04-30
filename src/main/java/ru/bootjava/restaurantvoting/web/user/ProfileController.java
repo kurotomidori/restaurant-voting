@@ -10,11 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.bootjava.restaurantvoting.model.User;
+import ru.bootjava.restaurantvoting.model.Vote;
 import ru.bootjava.restaurantvoting.to.UserTo;
 import ru.bootjava.restaurantvoting.util.UsersUtil;
 import ru.bootjava.restaurantvoting.web.AuthUser;
 
 import java.net.URI;
+import java.util.List;
 
 import static ru.bootjava.restaurantvoting.web.RestValidation.assureIdConsistent;
 import static ru.bootjava.restaurantvoting.web.RestValidation.checkNew;
@@ -56,5 +58,10 @@ public class ProfileController extends AbstractUserController {
         assureIdConsistent(userTo, authUser.id());
         User user = authUser.getUser();
         repository.prepareAndSave(UsersUtil.updateFromTo(user, userTo));
+    }
+
+    @GetMapping(value = "/votes")
+    List<Vote> getAllUserVotes(@AuthenticationPrincipal AuthUser authUser) {
+        return super.getVotesOfUser(authUser.id());
     }
 }

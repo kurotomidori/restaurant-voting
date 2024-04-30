@@ -1,13 +1,17 @@
 package ru.bootjava.restaurantvoting.web.restaurant;
 
 import ru.bootjava.restaurantvoting.model.Restaurant;
+import ru.bootjava.restaurantvoting.to.RestaurantTo;
 import ru.bootjava.restaurantvoting.web.MatcherFactory;
+
+import java.util.List;
 
 import static ru.bootjava.restaurantvoting.web.restaurant.RestaurantController.REST_URL;
 
 public class RestaurantTestData {
 
     public static final MatcherFactory.Matcher<Restaurant> RESTAURANT_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Restaurant.class);
+    public static final MatcherFactory.Matcher<RestaurantTo> RESTAURANT_TO_MATCHER = MatcherFactory.usingEqualsComparator(RestaurantTo.class);
 
     public static final String REST_URL_SLASH = REST_URL + '/';
 
@@ -23,6 +27,8 @@ public class RestaurantTestData {
     public static final Restaurant restaurant1 = new Restaurant(RESTAURANT_1_ID, RESTAURANT_1_NAME);
     public static final Restaurant restaurant2 = new Restaurant(RESTAURANT_2_ID, RESTAURANT_2_NAME);
     public static final Restaurant restaurant3 = new Restaurant(RESTAURANT_3_ID, RESTAURANT_3_NAME);
+
+    public static final List<Restaurant> restaurants = List.of(restaurant1, restaurant2, restaurant3);
 
     public static Restaurant getNew() {
         return new Restaurant(null, "New Restaurant");

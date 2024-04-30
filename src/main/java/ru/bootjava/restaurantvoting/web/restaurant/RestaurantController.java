@@ -7,12 +7,19 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.bootjava.restaurantvoting.model.Restaurant;
 import ru.bootjava.restaurantvoting.repository.RestaurantRepository;
+import ru.bootjava.restaurantvoting.repository.VoteRepository;
+import ru.bootjava.restaurantvoting.service.VoteService;
+import ru.bootjava.restaurantvoting.to.RestaurantTo;
+import ru.bootjava.restaurantvoting.util.RestaurantUtil;
+import ru.bootjava.restaurantvoting.web.AuthUser;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
 import static ru.bootjava.restaurantvoting.web.RestValidation.assureIdConsistent;
@@ -26,12 +33,15 @@ public class RestaurantController {
 
     static final String REST_URL = "/api/restaurants";
 
-    private RestaurantRepository repository;
+    private final RestaurantRepository repository;
+    private final VoteRepository voteRepository;
+    private final VoteService voteService;
 
     @GetMapping
-    public List<Restaurant> getAll() {
+    public List<RestaurantTo> getAll(@AuthenticationPrincipal AuthUser authUser) {
         log.info("getAllRestaurants");
-        return repository.findAll(Sort.by(Sort.Direction.ASC, "name"));
+        return RestaurantUtil.getTos(repository.findAll(Sort.by(Sort.Direction.ASC, "name")),
+                voteRepository.getTodayVoteByUser(authUser.id(), LocalDate.now()).orElse(null));
     }
 
     @GetMapping("/{id}")
@@ -64,5 +74,12 @@ public class RestaurantController {
         log.info("update {} with id={}", restaurant, id);
         assureIdConsistent(restaurant, id);
         repository.save(restaurant);
+    }
+
+    @PostMapping(value = "/{id}/vote")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void vote(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
+        log.info("User {} vote for Restaurant {}", authUser.id(), id);
+        voteService.save(authUser.id(), id);
     }
 }

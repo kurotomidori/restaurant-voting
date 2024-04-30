@@ -25,39 +25,39 @@ import static ru.bootjava.restaurantvoting.web.RestValidation.checkNew;
 @Slf4j
 public class DishController {
 
-    static final String REST_URL = "/api/restaurants/{rest_id}/dishes";
+    static final String REST_URL = "/api/restaurants/{restId}/dishes";
 
     private final DishRepository repository;
     private final DishService service;
 
     @GetMapping
-    public List<Dish> getAll(@PathVariable(name = "rest_id") int restaurantId) {
+    public List<Dish> getAll(@PathVariable(name = "restId") int restaurantId) {
         log.info("get all Dishes for Restaurant {}", restaurantId);
         return repository.getAll(restaurantId);
     }
 
     @GetMapping("/today")
-    public List<Dish> getTodayMenu(@PathVariable(name = "rest_id") int restaurantId) {
+    public List<Dish> getTodayMenu(@PathVariable(name = "restId") int restaurantId) {
         log.info("get all today's Dishes for Restaurant {}", restaurantId);
         return repository.getTodayDishes(restaurantId, LocalDate.now());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Dish> get(@PathVariable(name = "rest_id") int restaurantId, @PathVariable int id) {
+    public ResponseEntity<Dish> get(@PathVariable(name = "restId") int restaurantId, @PathVariable int id) {
         log.info("get Dish {} of Restaurant {}", id, restaurantId);
         return ResponseEntity.of(repository.get(restaurantId, id));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable(name = "rest_id") int restaurantId, @PathVariable int id) {
+    public void delete(@PathVariable(name = "restId") int restaurantId, @PathVariable int id) {
         log.info("delete Dish {} for Restaurant {}", id, restaurantId);
         Dish dish = repository.getBelonged(restaurantId, id);
         repository.delete(dish);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Dish> createWithLocation(@PathVariable(name = "rest_id") int restaurantId, @Valid @RequestBody Dish dish) {
+    public ResponseEntity<Dish> createWithLocation(@PathVariable(name = "restId") int restaurantId, @Valid @RequestBody Dish dish) {
         log.info("create {} for Restaurant {}", dish, restaurantId);
         checkNew(dish);
         Dish created = service.save(restaurantId, dish);
@@ -69,7 +69,7 @@ public class DishController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable(name = "rest_id") int restaurantId, @Valid @RequestBody Dish dish, @PathVariable int id) {
+    public void update(@PathVariable(name = "restId") int restaurantId, @Valid @RequestBody Dish dish, @PathVariable int id) {
         log.info("update {} with id={} for Restaurant {}", dish, id, restaurantId);
         assureIdConsistent(dish, id);
         repository.getBelonged(restaurantId, id);
