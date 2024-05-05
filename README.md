@@ -1,6 +1,9 @@
-# Technical requirement:
+# Restaurant voting application
 
-## Design and implement a REST API using Hibernate/Spring/SpringMVC (Spring-Boot preferred!) without frontend.
+-------------------------------------------------------------
+### Technical requirement:
+
+#### Design and implement a REST API using Hibernate/Spring/SpringMVC (Spring-Boot preferred!) without frontend.
 
 The task is:
 
@@ -21,3 +24,17 @@ As a result, provide a link to github repository. It should contain the code, RE
 
 P.S.: Make sure everything works with latest version that is on github :)
 P.P.S.: Assume that your API will be used by a frontend developer to build frontend on top of that.
+
+-------------------------------------------------------------
+
+- Stack: JDK 22, Spring Boot 3.2.5, Lombok, H2, Caffeine Cache, Swagger/OpenAPI 3.0
+- Run: `mvn spring-boot:run` in root directory.
+-----------------------------------------------------
+[REST API documentation](http://localhost:8080/)  
+Credentials:
+
+```
+Admin: admin@gmail.com / admin
+User:  user@yandex.ru / password
+Guest: guest@gmail.com / guest
+```

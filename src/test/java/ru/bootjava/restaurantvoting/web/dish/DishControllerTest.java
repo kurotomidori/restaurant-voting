@@ -6,6 +6,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.bootjava.restaurantvoting.model.Dish;
 import ru.bootjava.restaurantvoting.repository.DishRepository;
 import ru.bootjava.restaurantvoting.util.JsonUtil;
@@ -166,6 +168,33 @@ class DishControllerTest extends AbstractControllerTest {
         perform(MockMvcRequestBuilders.put(RestaurantTestData.REST_URL_SLASH + RESTAURANT_1_ID + URL_SLASH + DISH_1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(DishTestData.getUpdated())))
+                .andDo(print())
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @Transactional(propagation = Propagation.NEVER)
+    @WithUserDetails(value = ADMIN_MAIL)
+    void createDuplicate() throws Exception {
+        Dish duplicate = new Dish(dish1);
+        duplicate.setId(null);
+        perform(MockMvcRequestBuilders.post(RestaurantTestData.REST_URL_SLASH + RESTAURANT_1_ID + URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(duplicate)))
+                .andDo(print())
+                .andExpect(status().isConflict());
+    }
+
+    @Test
+    @Transactional(propagation = Propagation.NEVER)
+    @WithUserDetails(value = ADMIN_MAIL)
+    void updateDuplicate() throws Exception {
+        Dish duplicate = new Dish(dish1);
+        duplicate.setName(dish2.getName());
+        perform(MockMvcRequestBuilders.put(RestaurantTestData.REST_URL_SLASH + RESTAURANT_1_ID + URL_SLASH + DISH_1_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(duplicate)))
+                .andDo(print())
+                .andExpect(status().isConflict());
     }
 }

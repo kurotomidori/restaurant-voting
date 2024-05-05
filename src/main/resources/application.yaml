@@ -37,14 +37,28 @@ spring:
     is-getter: none
 
   # https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html#common-application-properties-cache
+
+  #cache:
+    #cache-names: users, currentdishes
+    #caffeine.spec: maximumSize=5000,expireAfterAccess=60s
   cache:
-    cache-names: users
-    caffeine.spec: maximumSize=5000,expireAfterAccess=60s
+    type: caffeine
+
+cache:
+  users-cache-name: users
+  users-cache-maximum-size: 5000
+  users-cache-t-tL: 1
+  dishes-cache-name: currentdishes
+  dishes-cache-maximum-size: 5000
+  dishes-cache-t-tL: 1440
+  restaurants-cache-name: restaurants
+  restaurants-cache-maximum-size: 5000
+  restaurants-cache-t-tL: 1440
 
 logging:
   level:
     root: WARN
-    ru.javaops.bootjava: DEBUG
+    ru.bootjava: INFO
     org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: DEBUG
 
 server.servlet:

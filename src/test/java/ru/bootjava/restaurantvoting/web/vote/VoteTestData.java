@@ -11,7 +11,7 @@ import static ru.bootjava.restaurantvoting.web.user.UserTestData.USER_ID;
 
 public class VoteTestData {
 
-    public static final MatcherFactory.Matcher<Vote> VOTE_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Vote.class);
+    public static final MatcherFactory.Matcher<Vote> VOTE_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Vote.class, "user", "restaurant");
 
     public static final int VOTE_1_ID = 1;
     public static final int VOTE_2_ID = 2;
@@ -23,4 +23,6 @@ public class VoteTestData {
     public static final Vote vote2 = new Vote(VOTE_2_ID, LocalDate.now(), RESTAURANT_1_ID, USER_ID);
     public static final Vote vote3 = new Vote(VOTE_3_ID, LocalDate.of(2024, 1, 1), RESTAURANT_3_ID, ADMIN_ID);
     public static final Vote vote4 = new Vote(VOTE_4_ID, LocalDate.now(), RESTAURANT_2_ID, ADMIN_ID);
+
+    public static final Vote changedVote2 = new Vote(vote2.getId(), vote2.getDate(), RESTAURANT_2_ID, vote2.getUserId());
 }
