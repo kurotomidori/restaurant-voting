@@ -45,6 +45,8 @@ class RestaurantControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_MAIL)
     void getAll() throws Exception {
+        BDDMockito.given(clock.instant()).willReturn(Instant.now());
+        BDDMockito.given(clock.getZone()).willReturn(ZoneId.systemDefault());
         perform(MockMvcRequestBuilders.get(REST_URL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

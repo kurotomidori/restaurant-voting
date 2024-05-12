@@ -2,7 +2,6 @@ package ru.bootjava.restaurantvoting.repository;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import ru.bootjava.restaurantvoting.error.DataConflictException;
@@ -18,9 +17,9 @@ public interface DishRepository extends BaseRepository<Dish> {
     @Query("SELECT d FROM Dish d WHERE d.restaurant.id=:restaurantId ORDER BY d.date DESC, d.name")
     List<Dish> getAll(int restaurantId);
 
-    @Cacheable(value = "currentdishes")
+    @Cacheable(value = "currentdishes", key = "#restaurantId")
     @Query("SELECT d FROM Dish d WHERE d.restaurant.id=:restaurantId AND d.date=:date ORDER BY d.name")
-    List<Dish> getTodayDishes(int restaurantId, LocalDate date);
+    List<Dish> getDishesByDate(int restaurantId, LocalDate date);
 
     @Query("SELECT d FROM Dish d WHERE d.id = :id and d.restaurant.id=:restaurantId")
     Optional<Dish> get(int restaurantId, int id);
@@ -31,14 +30,11 @@ public interface DishRepository extends BaseRepository<Dish> {
     }
 
     @Override
-    @Modifying
     @Transactional
-    @CacheEvict(value = "currentdishes", allEntries = true)
+    @CacheEvict(value = "currentdishes", key = "#dish.restaurant.id")
     void delete(Dish dish);
 
     @Override
-    @Modifying
     @Transactional
-    @CacheEvict(value = "currentdishes", allEntries = true)
     Dish save(Dish dish);
 }

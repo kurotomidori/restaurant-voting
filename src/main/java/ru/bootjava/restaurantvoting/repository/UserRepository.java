@@ -14,12 +14,12 @@ import static ru.bootjava.restaurantvoting.config.SecurityConfig.PASSWORD_ENCODE
 @Transactional(readOnly = true)
 public interface UserRepository extends BaseRepository<User> {
 
-    @Cacheable("users")
+    @Cacheable(value = "users", key = "#email")
     @Query("SELECT u FROM User u WHERE u.email = LOWER(:email)")
     Optional<User> findByEmailIgnoreCase(String email);
 
     @Transactional
-    @CacheEvict(value="users", key="#user.email")
+    @CacheEvict(value = "users", key = "#user.email")
     default User prepareAndSave(User user) {
         user.setPassword(PASSWORD_ENCODER.encode(user.getPassword()));
         user.setEmail(user.getEmail().toLowerCase());

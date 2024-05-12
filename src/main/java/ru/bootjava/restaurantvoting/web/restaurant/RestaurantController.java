@@ -3,6 +3,8 @@ package ru.bootjava.restaurantvoting.web.restaurant;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,6 +21,7 @@ import ru.bootjava.restaurantvoting.util.RestaurantUtil;
 import ru.bootjava.restaurantvoting.web.AuthUser;
 
 import java.net.URI;
+import java.time.Clock;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -36,12 +39,13 @@ public class RestaurantController {
     private final RestaurantRepository repository;
     private final VoteRepository voteRepository;
     private final VoteService voteService;
+    private final Clock clock;
 
     @GetMapping
     public List<RestaurantTo> getAll(@AuthenticationPrincipal AuthUser authUser) {
         log.info("getAllRestaurants");
         return RestaurantUtil.getTos(repository.findAll(Sort.by(Sort.Direction.ASC, "name")),
-                voteRepository.getTodayVoteByUser(authUser.id(), LocalDate.now()).orElse(null));
+                voteRepository.getVoteByUserByDate(authUser.id(), LocalDate.now(clock)).orElse(null));
     }
 
     @GetMapping("/{id}")
@@ -52,6 +56,10 @@ public class RestaurantController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Caching(evict = {
+            @CacheEvict(value = "restaurants", allEntries = true),
+            @CacheEvict(value = "currentdishes", key = "#id")
+    })
     public void delete(@PathVariable int id) {
         log.info("deleteRestaurant {}", id);
         repository.deleteExisted(id);

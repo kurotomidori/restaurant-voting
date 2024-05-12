@@ -1,6 +1,7 @@
 package ru.bootjava.restaurantvoting.web.user;
 
 import jakarta.validation.Valid;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,6 +33,7 @@ public class AdminUserController extends AbstractUserController {
     @Override
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CacheEvict(value = "users", allEntries = true)
     public void delete(@PathVariable int id) {
         super.delete(id);
     }

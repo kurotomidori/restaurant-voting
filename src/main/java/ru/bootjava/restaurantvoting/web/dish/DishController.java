@@ -13,6 +13,7 @@ import ru.bootjava.restaurantvoting.repository.DishRepository;
 import ru.bootjava.restaurantvoting.service.DishService;
 
 import java.net.URI;
+import java.time.Clock;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class DishController {
 
     private final DishRepository repository;
     private final DishService service;
+    private final Clock clock;
 
     @GetMapping
     public List<Dish> getAll(@PathVariable(name = "restId") int restaurantId) {
@@ -39,7 +41,7 @@ public class DishController {
     @GetMapping("/today")
     public List<Dish> getTodayMenu(@PathVariable(name = "restId") int restaurantId) {
         log.info("get all today's Dishes for Restaurant {}", restaurantId);
-        return repository.getTodayDishes(restaurantId, LocalDate.now());
+        return repository.getDishesByDate(restaurantId, LocalDate.now(clock));
     }
 
     @GetMapping("/{id}")

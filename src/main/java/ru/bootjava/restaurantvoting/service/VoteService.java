@@ -10,7 +10,7 @@ import ru.bootjava.restaurantvoting.repository.UserRepository;
 import ru.bootjava.restaurantvoting.repository.VoteRepository;
 
 import java.time.Clock;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Optional;
 
@@ -27,16 +27,17 @@ public class VoteService {
 
     @Transactional
     public void save(int userId, int restaurantId) {
-        if (LocalTime.now(clock).isAfter(LocalTime.of(11, 0))) {
-            throw new IllegalArgumentException("It's to late to vote today");
-        }
-        Optional<Vote> optionalVote = voteRepository.getTodayVoteByUser(userId, LocalDate.now());
+        LocalDateTime now = LocalDateTime.now(clock);
+        Optional<Vote> optionalVote = voteRepository.getVoteByUserByDate(userId, now.toLocalDate());
         Vote vote;
         if (optionalVote.isEmpty()) {
-            vote = new Vote(null, LocalDate.now());
+            vote = new Vote(null, now.toLocalDate());
             vote.setUser(userRepository.getExisted(userId));
             vote.setRestaurant(restaurantRepository.getExisted(restaurantId));
         } else {
+            if (now.toLocalTime().isAfter(LocalTime.of(11, 0))) {
+                throw new IllegalArgumentException("It's to late to vote today");
+            }
             vote = optionalVote.get();
             vote.setRestaurant(restaurantRepository.getExisted(restaurantId));
         }

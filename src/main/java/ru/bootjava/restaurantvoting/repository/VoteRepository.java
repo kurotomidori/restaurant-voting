@@ -22,7 +22,7 @@ public interface VoteRepository extends BaseRepository<Vote> {
     Optional<Vote> get(int restaurantId, int id);
 
     @Query("SELECT v FROM Vote v WHERE v.user.id=:userId and v.date=:date")
-    Optional<Vote> getTodayVoteByUser(int userId, LocalDate date);
+    Optional<Vote> getVoteByUserByDate(int userId, LocalDate date);
 
     default Vote getBelonged(int restaurantId, int id) {
         return get(restaurantId, id).orElseThrow(

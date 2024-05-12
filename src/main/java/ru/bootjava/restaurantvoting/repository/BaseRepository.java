@@ -1,6 +1,5 @@
 package ru.bootjava.restaurantvoting.repository;
 
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -20,7 +19,6 @@ public interface BaseRepository<T> extends JpaRepository<T, Integer> {
 
     //  https://stackoverflow.com/a/60695301/548473 (existed delete code 204, not existed: 404)
     @SuppressWarnings("all") // transaction invoked
-    @CacheEvict(value = {"users", "restaurants"}, allEntries = true)
     default void deleteExisted(int id) {
         if (delete(id) == 0) {
             throw new NotFoundException("Entity with id=" + id + " not found");
