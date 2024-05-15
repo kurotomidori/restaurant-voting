@@ -55,7 +55,7 @@ class VoteControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = USER_MAIL)
     void getTodayVote() throws Exception {
         BDDMockito.given(clock.instant()).willReturn(Instant.now());
-        BDDMockito.given(clock.getZone()).willReturn(ZoneId.of("UCT"));
+        BDDMockito.given(clock.getZone()).willReturn(ZoneId.systemDefault());
         perform(MockMvcRequestBuilders.get(REST_URL_SLASH + "today"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
