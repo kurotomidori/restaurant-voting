@@ -15,17 +15,14 @@ public interface VoteRepository extends BaseRepository<Vote> {
     @Query("SELECT v FROM Vote v WHERE v.user.id=:userId ORDER BY v.date DESC")
     List<Vote> getAllVotesByUser(int userId);
 
-    @Query("SELECT v FROM Vote v WHERE v.restaurant.id=:restaurantId ORDER BY v.date DESC")
-    List<Vote> getAllVotesByRestaurant(int restaurantId);
-
-    @Query("SELECT v FROM Vote v WHERE v.id = :id and v.restaurant.id=:restaurantId")
-    Optional<Vote> get(int restaurantId, int id);
+    @Query("SELECT v FROM Vote v WHERE v.id = :id and v.user.id=:userId")
+    Optional<Vote> get(int userId, int id);
 
     @Query("SELECT v FROM Vote v WHERE v.user.id=:userId and v.date=:date")
     Optional<Vote> getVoteByUserByDate(int userId, LocalDate date);
 
-    default Vote getBelonged(int restaurantId, int id) {
-        return get(restaurantId, id).orElseThrow(
-                () -> new DataConflictException("Vote id=" + id + "   is not exist or doesn't belong to Restaurant id=" + restaurantId));
+    default Vote getBelonged(int userId, int id) {
+        return get(userId, id).orElseThrow(
+                () -> new DataConflictException("Vote id=" + id + "   is not exist or doesn't belong to User id=" + userId));
     }
 }

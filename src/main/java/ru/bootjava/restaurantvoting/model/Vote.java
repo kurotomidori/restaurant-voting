@@ -27,6 +27,8 @@ public class Vote extends BaseEntity {
     @JsonIgnore
     private Restaurant restaurant;
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @NotNull
     @Column(name = "restaurant_id", insertable = false, updatable = false)
     private Integer restaurantId;
 
@@ -36,6 +38,8 @@ public class Vote extends BaseEntity {
     @JsonIgnore
     private User user;
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @NotNull
     @Column(name = "user_id", insertable = false, updatable = false)
     private Integer userId;
 

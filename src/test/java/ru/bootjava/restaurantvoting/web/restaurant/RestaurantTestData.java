@@ -1,7 +1,6 @@
 package ru.bootjava.restaurantvoting.web.restaurant;
 
 import ru.bootjava.restaurantvoting.model.Restaurant;
-import ru.bootjava.restaurantvoting.to.RestaurantTo;
 import ru.bootjava.restaurantvoting.web.MatcherFactory;
 
 import java.util.List;
@@ -11,7 +10,6 @@ import static ru.bootjava.restaurantvoting.web.restaurant.RestaurantController.R
 public class RestaurantTestData {
 
     public static final MatcherFactory.Matcher<Restaurant> RESTAURANT_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Restaurant.class);
-    public static final MatcherFactory.Matcher<RestaurantTo> RESTAURANT_TO_MATCHER = MatcherFactory.usingEqualsComparator(RestaurantTo.class);
 
     public static final String REST_URL_SLASH = REST_URL + '/';
 

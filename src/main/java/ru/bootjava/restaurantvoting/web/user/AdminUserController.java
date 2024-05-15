@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.bootjava.restaurantvoting.model.User;
-import ru.bootjava.restaurantvoting.model.Vote;
 
 import java.net.URI;
 import java.util.List;
@@ -76,10 +75,5 @@ public class AdminUserController extends AbstractUserController {
         log.info(enabled ? "enable {}" : "disable {}", id);
         User user = repository.getExisted(id);
         user.setEnabled(enabled);
-    }
-
-    @GetMapping(value = "/{id}/votes")
-    List<Vote> getAllUserVotes(@PathVariable int id) {
-        return super.getVotesOfUser(id);
     }
 }

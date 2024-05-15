@@ -24,5 +24,11 @@ public class VoteTestData {
     public static final Vote vote3 = new Vote(VOTE_3_ID, LocalDate.of(2024, 1, 1), RESTAURANT_3_ID, ADMIN_ID);
     public static final Vote vote4 = new Vote(VOTE_4_ID, LocalDate.now(), RESTAURANT_2_ID, ADMIN_ID);
 
-    public static final Vote changedVote2 = new Vote(vote2.getId(), vote2.getDate(), RESTAURANT_2_ID, vote2.getUserId());
+    public static Vote getNew() {
+        return new Vote(null, LocalDate.of(2042, 1, 1), RESTAURANT_3_ID, USER_ID);
+    }
+
+    public static Vote getChanged() {
+        return new Vote(VOTE_2_ID, vote2.getDate(), RESTAURANT_3_ID, USER_ID);
+    }
 }

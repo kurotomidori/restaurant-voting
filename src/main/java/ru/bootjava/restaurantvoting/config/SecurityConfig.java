@@ -54,7 +54,6 @@ public class SecurityConfig {
                         authz.requestMatchers("/api/admin/**").hasRole(Role.ADMIN.name())
                                 .requestMatchers(HttpMethod.POST, "/api/profile").anonymous()
                                 .requestMatchers(HttpMethod.GET,"/api/restaurants", "/api/restaurants/{id}/dishes/today").authenticated()
-                                .requestMatchers(HttpMethod.POST,"/api/restaurants/{id}/vote").authenticated()
                                 .requestMatchers(HttpMethod.POST, "/api/restaurants", "/api/restaurants/{id}/**").hasRole(Role.ADMIN.name())
                                 .requestMatchers(HttpMethod.GET, "/api/restaurants/**").hasRole(Role.ADMIN.name())
                                 .requestMatchers(HttpMethod.PUT, "/api/restaurants/**").hasRole(Role.ADMIN.name())

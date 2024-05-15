@@ -10,9 +10,9 @@ import ru.bootjava.restaurantvoting.repository.UserRepository;
 import ru.bootjava.restaurantvoting.repository.VoteRepository;
 
 import java.time.Clock;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -25,22 +25,28 @@ public class VoteService {
 
     private final Clock clock;
 
+    private final LocalTime revotingTimeLimit = LocalTime.of(11, 0);
+
     @Transactional
-    public void save(int userId, int restaurantId) {
+    public Vote save(int userId, int restaurantId) {
+        Vote vote = new Vote(null, LocalDate.now(clock));
+        vote.setUser(userRepository.getExisted(userId));
+        vote.setRestaurant(restaurantRepository.getExisted(restaurantId));
+        vote.setUserId(userId);
+        vote.setRestaurantId(restaurantId);
+        return voteRepository.save(vote);
+    }
+
+    @Transactional
+    public void changeVote(int id, int userId, int restaurantId) {
         LocalDateTime now = LocalDateTime.now(clock);
-        Optional<Vote> optionalVote = voteRepository.getVoteByUserByDate(userId, now.toLocalDate());
-        Vote vote;
-        if (optionalVote.isEmpty()) {
-            vote = new Vote(null, now.toLocalDate());
-            vote.setUser(userRepository.getExisted(userId));
-            vote.setRestaurant(restaurantRepository.getExisted(restaurantId));
-        } else {
-            if (now.toLocalTime().isAfter(LocalTime.of(11, 0))) {
-                throw new IllegalArgumentException("It's to late to vote today");
-            }
-            vote = optionalVote.get();
-            vote.setRestaurant(restaurantRepository.getExisted(restaurantId));
+        if (now.toLocalTime().isAfter(revotingTimeLimit)) {
+            throw new IllegalArgumentException("It's to late to vote today");
         }
-        voteRepository.save(vote);
+        Vote vote = voteRepository.getBelonged(userId, id);
+        if (!vote.getDate().isEqual(now.toLocalDate())) {
+            throw new IllegalArgumentException("You can't change old votes");
+        }
+        vote.setRestaurant(restaurantRepository.getExisted(restaurantId));
     }
 }
